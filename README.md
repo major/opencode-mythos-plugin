@@ -69,7 +69,7 @@ To run the plugin from a clone (for example while you change it), install its de
 ```sh
 git clone <this-repo-url> ~/git/opencode-mythos-plugin
 cd ~/git/opencode-mythos-plugin
-bun install --omit peer --ignore-scripts
+bun install --omit dev --omit peer --ignore-scripts
 ```
 
 ```jsonc
@@ -156,25 +156,17 @@ All models use the native Anthropic driver.
 | `Invalid API base URL` error at startup | The `baseURL` is not `https` (or `http` on a loopback host), or it has a user name, password, query, or hash. |
 | `refusing to send credentials to <origin>` on a request | The request went to a host other than the configured `baseURL`. The plugin never attaches your token to other hosts. |
 | `could not load Anthropic profile credentials` on a request | Your token could not be loaded or refreshed. Run `ant auth login` again. |
-| `Cannot find module '@anthropic-ai/sdk'` (local checkout) | Run `bun install --omit peer --ignore-scripts` in the plugin directory. |
+| `Cannot find module '@anthropic-ai/sdk'` (local checkout) | Run `bun install --omit dev --omit peer --ignore-scripts` in the plugin directory. |
 
 ## Local development
 
-The plugin uses the OpenCode V2 plugin API. Local SDK development needs a prepared OpenCode checkout at revision `8eff035bf45342bda2d37a884df1191cd9bf3e62` (branch `mythos-plugin-sdk`). This revision is pinned for the local bootstrap. Install dependencies in that checkout first. Then install this plugin's development dependencies and link the local packages:
+The plugin uses the OpenCode V2 plugin API. Install all dependencies, including the published `@opencode/plugin`, `@opencode/ai`, `@opencode/schema` (2.0.28), and Effect (4.0.1) packages used for type checks and tests:
 
 ```sh
-bun install --omit peer --ignore-scripts
-bun run bootstrap:local /path/to/opencode
+bun install
 ```
 
-The bootstrap command:
-
-- Checks that the checkout has `@opencode/plugin` 2.0.26 and Effect 4.0.0-rc.118.
-- Creates only the missing links in `node_modules`.
-- Stops with an error if a path already exists and does not match. It never replaces existing links or directories.
-- Stops with an error on a dangling link. Remove that link by hand, then run the command again.
-
-`@opencode/plugin`, `@opencode/ai`, `@opencode/schema`, and Effect come from that local checkout. This project does not bundle them.
+These development copies are only for checks and tests. They are not bundled and are not installed with the published package.
 
 Run the checks with:
 
