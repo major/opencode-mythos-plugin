@@ -195,20 +195,33 @@ bun run verify:package
 
 ## Releasing
 
-Releases are published to npm by the `Release` GitHub Actions workflow (`.github/workflows/release.yml`). It uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), so no npm token is stored in GitHub. npm adds [provenance](https://docs.npmjs.com/generating-provenance-statements) to each release automatically.
+Releases are automated with [release-please](https://github.com/googleapis/release-please) and the `Release` workflow (`.github/workflows/release.yml`).
 
-To cut a release:
-
-```sh
-npm version patch --no-git-tag-version   # or minor / major
-git commit -S -s -am "chore: release v$(node -p "require('./package.json').version")"
-git tag -s "v$(node -p "require('./package.json').version")" -m "v$(node -p "require('./package.json').version")"
-git push origin main --follow-tags
+```
+feat:/fix: commits land on main
+        │
+        ▼
+release-please opens or updates a "chore(main): release X.Y.Z" PR
+(bumps package.json, updates CHANGELOG.md)
+        │  merge it when you want to ship
+        ▼
+tag vX.Y.Z + GitHub Release ─► npm publish (trusted publishing, provenance)
 ```
 
-The workflow checks that the tag matches the `package.json` version, then runs `npm publish`. `prepublishOnly` runs the type check, tests, build, and `verify:package` before anything is uploaded.
+Commit messages decide the next version:
+
+| Commit type | Release |
+|---|---|
+| `fix:` | patch |
+| `feat:` | minor |
+| `feat!:` or a `BREAKING CHANGE:` footer | minor while below 1.0.0, then major |
+| `chore:`, `ci:`, `docs:`, `test:`, `refactor:` | no release on their own |
+
+Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), so no npm token is stored in GitHub. npm adds [provenance](https://docs.npmjs.com/generating-provenance-statements) automatically. `prepublishOnly` runs the type check, tests, build, and `verify:package` before anything is uploaded.
 
 The trusted publisher on npmjs.com must match this repo exactly: user `major`, repository `opencode-mythos-plugin`, workflow `release.yml`, and no environment.
+
+The Release PR needs a GitHub App token so that CI runs on it. Set the repo variable `RELEASE_APP_CLIENT_ID` and the repo secret `RELEASE_APP_PRIVATE_KEY`. The app needs read and write access to contents, pull requests, and issues. Without them, the workflow falls back to `GITHUB_TOKEN`, and CI does not run on the Release PR on its own.
 
 ## Disclaimer
 
