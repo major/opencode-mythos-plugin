@@ -43,7 +43,7 @@ Add `@<version>` to the name to stay on one release, the same way you would pin 
 
 ```jsonc
 {
-  "plugins": ["@mhayden/opencode-mythos-plugin@0.1.0"] // x-release-please-version
+  "plugins": ["@mhayden/opencode-mythos-plugin@0.1.0"]
 }
 ```
 
@@ -195,33 +195,23 @@ bun run verify:package
 
 ## Releasing
 
-Releases are automated with [release-please](https://github.com/googleapis/release-please) and the `Release` workflow (`.github/workflows/release.yml`).
+Releases are cut by hand from a local clone. Nothing is published from GitHub Actions.
 
+```sh
+git switch main && git pull --ff-only
+rm -rf node_modules && bun install --frozen-lockfile
+
+npm version patch --no-git-tag-version          # or minor / major
+v="v$(node -p "require('./package.json').version")"
+git commit -S -s -am "chore: release $v"
+git tag -s "$v" -m "$v"
+
+npm publish                                     # prepublishOnly runs all checks first
+git push origin main "$v"
+gh release create "$v" --verify-tag --generate-notes
 ```
-feat:/fix: commits land on main
-        │
-        ▼
-release-please opens or updates a "chore(main): release X.Y.Z" PR
-(bumps package.json, updates CHANGELOG.md)
-        │  merge it when you want to ship
-        ▼
-tag vX.Y.Z + GitHub Release ─► npm publish (trusted publishing, provenance)
-```
 
-Commit messages decide the next version:
-
-| Commit type | Release |
-|---|---|
-| `fix:` | patch |
-| `feat:` | minor |
-| `feat!:` or a `BREAKING CHANGE:` footer | minor while below 1.0.0, then major |
-| `chore:`, `ci:`, `docs:`, `test:`, `refactor:` | no release on their own |
-
-Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), so no npm token is stored in GitHub. npm adds [provenance](https://docs.npmjs.com/generating-provenance-statements) automatically. `prepublishOnly` runs the type check, tests, build, and `verify:package` before anything is uploaded.
-
-The trusted publisher on npmjs.com must match this repo exactly: user `major`, repository `opencode-mythos-plugin`, workflow `release.yml`, and no environment. It must also allow `npm publish`. New trusted publishers allow only `npm stage publish` by default.
-
-The Release PR needs a GitHub App token so that CI runs on it. Set the repo variable `RELEASE_APP_CLIENT_ID` and the repo secret `RELEASE_APP_PRIVATE_KEY`. The app needs read and write access to contents, pull requests, and issues. Without them, the workflow falls back to `GITHUB_TOKEN`, and CI does not run on the Release PR on its own.
+`npm publish` runs `prepublishOnly` first: the type check, the tests, the build, and `verify:package`. If any of them fail, nothing is uploaded. Push the tag only after the publish succeeds, so every GitHub Release matches a version on npm.
 
 ## Disclaimer
 
