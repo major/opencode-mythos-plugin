@@ -1,0 +1,41 @@
+{
+  "name": "@mhayden/opencode-mythos-plugin",
+  "version": "0.1.0",
+  "description": "OpenCode V2 provider plugin for Claude Mythos models using your ant CLI login",
+  "type": "module",
+  "keywords": ["opencode", "opencode-plugin", "anthropic", "claude", "mythos"],
+  "author": "Major Hayden <major@mhtx.net>",
+  "license": "MIT",
+  "scripts": {
+    "build": "bun build src/index.ts --outfile dist/index.js --target node --format esm --packages external",
+    "test": "bun test ./test",
+    "check": "tsc --noEmit",
+    "verify:package": "bun scripts/verify-package.ts",
+    "prepublishOnly": "bun run check && bun run test && bun run build && bun run verify:package",
+    "bootstrap:local": "bun scripts/bootstrap-local.ts"
+  },
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./server": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "publishConfig": { "access": "public" },
+  "dependencies": { "@anthropic-ai/sdk": "0.133.0" },
+  "peerDependencies": {
+    "@opencode/plugin": "^2.0.26",
+    "@opencode/ai": "^2.0.26",
+    "@opencode/schema": "^2.0.26",
+    "effect": "4.0.0-rc.118"
+  },
+  "peerDependenciesMeta": {
+    "@opencode/plugin": { "optional": true },
+    "@opencode/ai": { "optional": true },
+    "@opencode/schema": { "optional": true },
+    "effect": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/bun": "1.2.15",
+    "typescript": "5.8.3"
+  }
+}
