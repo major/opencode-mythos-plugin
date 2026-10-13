@@ -7,7 +7,10 @@
       "package-name": "@mhayden/opencode-mythos-plugin",
       "include-component-in-tag": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": false
+      "bump-patch-for-minor-pre-major": false,
+      "extra-files": [
+        "README.md"
+      ]
     }
   }
 }

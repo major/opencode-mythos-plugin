@@ -43,7 +43,7 @@ Add `@<version>` to the name to stay on one release, the same way you would pin 
 
 ```jsonc
 {
-  "plugins": ["@mhayden/opencode-mythos-plugin@0.1.0"]
+  "plugins": ["@mhayden/opencode-mythos-plugin@0.0.1"] // x-release-please-version
 }
 ```
 
@@ -219,7 +219,7 @@ Commit messages decide the next version:
 
 Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), so no npm token is stored in GitHub. npm adds [provenance](https://docs.npmjs.com/generating-provenance-statements) automatically. `prepublishOnly` runs the type check, tests, build, and `verify:package` before anything is uploaded.
 
-The trusted publisher on npmjs.com must match this repo exactly: user `major`, repository `opencode-mythos-plugin`, workflow `release.yml`, and no environment.
+The trusted publisher on npmjs.com must match this repo exactly: user `major`, repository `opencode-mythos-plugin`, workflow `release.yml`, and no environment. It must also allow `npm publish`. New trusted publishers allow only `npm stage publish` by default.
 
 The Release PR needs a GitHub App token so that CI runs on it. Set the repo variable `RELEASE_APP_CLIENT_ID` and the repo secret `RELEASE_APP_PRIVATE_KEY`. The app needs read and write access to contents, pull requests, and issues. Without them, the workflow falls back to `GITHUB_TOKEN`, and CI does not run on the Release PR on its own.
 
