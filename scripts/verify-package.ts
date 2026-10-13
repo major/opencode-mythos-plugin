@@ -15,9 +15,18 @@ const root = join(import.meta.dir, "..")
 const metadata = JSON.parse(await Bun.file(join(root, "package.json")).text())
 const name: string = metadata.name
 
+/**
+ * Environment for child commands. `npm publish --dry-run` exports npm_config_dry_run=true to
+ * prepublishOnly, which would turn the real `npm pack` and `npm install` below into no-ops.
+ * Dropping it lets the dry run still check the package for real.
+ */
+const childEnv = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => key.toLowerCase() !== "npm_config_dry_run"),
+)
+
 /** Runs a command and fails loudly with its output when it exits non-zero. */
 function run(cmd: string[], cwd: string): string {
-  const result = Bun.spawnSync(cmd, { cwd, stdout: "pipe", stderr: "pipe" })
+  const result = Bun.spawnSync(cmd, { cwd, env: childEnv, stdout: "pipe", stderr: "pipe" })
   if (result.exitCode !== 0) throw new Error(`${cmd.join(" ")} failed:\n${result.stderr.toString()}`)
   return result.stdout.toString()
 }
