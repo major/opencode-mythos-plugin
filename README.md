@@ -43,7 +43,7 @@ Add `@<version>` to the name to stay on one release, the same way you would pin 
 
 ```jsonc
 {
-  "plugins": ["@mhayden/opencode-mythos-plugin@0.0.1"] // x-release-please-version
+  "plugins": ["@mhayden/opencode-mythos-plugin@0.1.0"] // x-release-please-version
 }
 ```
 
