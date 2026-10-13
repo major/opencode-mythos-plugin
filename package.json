@@ -6,6 +6,9 @@
   "keywords": ["unofficial", "opencode", "opencode-plugin", "anthropic", "claude", "mythos"],
   "author": "Major Hayden <major@mhtx.net>",
   "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/major/opencode-mythos-plugin.git" },
+  "homepage": "https://github.com/major/opencode-mythos-plugin#readme",
+  "bugs": { "url": "https://github.com/major/opencode-mythos-plugin/issues" },
   "scripts": {
     "build": "bun build src/index.ts --banner \"// Unofficial plugin. Not affiliated with or endorsed by the OpenCode project or Anthropic.\" --outfile dist/index.js --target node --format esm --packages external",
     "test": "bun test ./test",

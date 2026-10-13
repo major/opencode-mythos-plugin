@@ -67,7 +67,7 @@ Use the object form to pass [options](#options):
 To run the plugin from a clone (for example while you change it), install its dependencies and point `package` at the clone's **directory**. OpenCode finds the entry point through `server.ts` at the repository root.
 
 ```sh
-git clone <this-repo-url> ~/git/opencode-mythos-plugin
+git clone https://github.com/major/opencode-mythos-plugin.git ~/git/opencode-mythos-plugin
 cd ~/git/opencode-mythos-plugin
 bun install --omit dev --omit peer --ignore-scripts
 ```
@@ -192,6 +192,23 @@ bun run verify:package
 ```
 
 `verify:package` packs the plugin, installs the tarball in a scratch folder the way OpenCode does, checks that no OpenCode or Effect packages were installed, and loads the plugin by its package name. `npm publish` runs the type check, the tests, the build, and this check first through `prepublishOnly`.
+
+## Releasing
+
+Releases are published to npm by the `Release` GitHub Actions workflow (`.github/workflows/release.yml`). It uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/), so no npm token is stored in GitHub. npm adds [provenance](https://docs.npmjs.com/generating-provenance-statements) to each release automatically.
+
+To cut a release:
+
+```sh
+npm version patch --no-git-tag-version   # or minor / major
+git commit -S -s -am "chore: release v$(node -p "require('./package.json').version")"
+git tag -s "v$(node -p "require('./package.json').version")" -m "v$(node -p "require('./package.json').version")"
+git push origin main --follow-tags
+```
+
+The workflow checks that the tag matches the `package.json` version, then runs `npm publish`. `prepublishOnly` runs the type check, tests, build, and `verify:package` before anything is uploaded.
+
+The trusted publisher on npmjs.com must match this repo exactly: user `major`, repository `opencode-mythos-plugin`, workflow `release.yml`, and no environment.
 
 ## Disclaimer
 
