@@ -36,7 +36,7 @@ describe("Mythos provider registration", () => {
     const [registration] = result.providers
     expect(registration.info).toMatchObject({
       id: "mythos",
-      name: "Mythos",
+      name: "Mythos (unofficial)",
       activation: "enabled",
       package: nativePackage,
       headers: { "anthropic-beta": "oauth-2025-04-20" },

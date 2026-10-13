@@ -1,3 +1,9 @@
+/**
+ * Unofficial Mythos provider plugin for OpenCode.
+ *
+ * This is a community project. It is not affiliated with, endorsed by, or supported by the
+ * OpenCode project or Anthropic. Product names are used only to describe compatibility.
+ */
 import { defaultCredentials } from "@anthropic-ai/sdk/lib/credentials/credential-chain"
 import type { CredentialResult } from "@anthropic-ai/sdk/lib/credentials/types"
 import { Model, Plugin, Provider } from "@opencode/plugin"
@@ -58,7 +64,7 @@ export function createMythosPlugin(deps: MythosDeps) {
         editor.add({
           info: {
             id: providerID,
-            name: "Mythos",
+            name: "Mythos (unofficial)",
             activation: "enabled",
             package: packageName,
             headers: { "anthropic-beta": authBeta },

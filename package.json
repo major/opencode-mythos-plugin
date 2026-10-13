@@ -1,13 +1,13 @@
 {
   "name": "@mhayden/opencode-mythos-plugin",
   "version": "0.1.0",
-  "description": "OpenCode V2 provider plugin for Claude Mythos models using your ant CLI login",
+  "description": "Unofficial OpenCode V2 provider plugin for Claude Mythos models using your ant CLI login. Not affiliated with OpenCode or Anthropic.",
   "type": "module",
-  "keywords": ["opencode", "opencode-plugin", "anthropic", "claude", "mythos"],
+  "keywords": ["unofficial", "opencode", "opencode-plugin", "anthropic", "claude", "mythos"],
   "author": "Major Hayden <major@mhtx.net>",
   "license": "MIT",
   "scripts": {
-    "build": "bun build src/index.ts --outfile dist/index.js --target node --format esm --packages external",
+    "build": "bun build src/index.ts --banner \"// Unofficial plugin. Not affiliated with or endorsed by the OpenCode project or Anthropic.\" --outfile dist/index.js --target node --format esm --packages external",
     "test": "bun test ./test",
     "check": "tsc --noEmit",
     "verify:package": "bun scripts/verify-package.ts",

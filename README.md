@@ -1,4 +1,6 @@
-# OpenCode Mythos Plugin
+# Mythos Provider Plugin for OpenCode (Unofficial)
+
+> **Unofficial project.** This is a community plugin. It is not affiliated with, endorsed by, or supported by the OpenCode project or Anthropic. "OpenCode", "Anthropic", "Claude", and "Mythos" are names and trademarks of their owners and are used here only to describe what this plugin works with. Report problems with this plugin to this project, not to OpenCode or Anthropic.
 
 This plugin registers a `mythos` provider in OpenCode V2. It sends Mythos requests to the Anthropic API using your existing `ant` CLI profile. It does not use browser automation, import browser state, or write credentials. The official `@anthropic-ai/sdk` (pinned to `0.133.0`) loads credentials, refreshes tokens, and writes them back.
 
@@ -198,6 +200,10 @@ bun run verify:package
 ```
 
 `verify:package` packs the plugin, installs the tarball in a scratch folder the way OpenCode does, checks that no OpenCode or Effect packages were installed, and loads the plugin by its package name. `npm publish` runs the type check, the tests, the build, and this check first through `prepublishOnly`.
+
+## Disclaimer
+
+This plugin is unofficial. It is not affiliated with, endorsed by, sponsored by, or supported by the OpenCode project or Anthropic. All product names and trademarks belong to their owners. Use of the Anthropic API through this plugin is subject to your own agreement with Anthropic.
 
 ## License
 
