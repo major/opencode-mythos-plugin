@@ -42,6 +42,6 @@
     "@opencode/schema": "2.0.28",
     "@types/bun": "1.4.2",
     "effect": "4.0.1",
-    "typescript": "5.8.3"
+    "typescript": "7.0.2"
   }
 }
