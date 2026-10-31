@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@opencode/ai": "2.1.4",
-    "@opencode/plugin": "2.0.32",
+    "@opencode/plugin": "2.1.4",
     "@opencode/schema": "2.0.32",
     "@types/bun": "1.4.4",
     "effect": "4.0.1",
